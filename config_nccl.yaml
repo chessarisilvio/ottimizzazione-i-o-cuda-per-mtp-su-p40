@@ -1,0 +1,44 @@
+# NCCL configuration for MTP optimization on Tesla P40
+# Adjust values based on profiling results
+
+# Debugging and logging
+NCCL_DEBUG: INFO
+NCCL_DEBUG_SUBSYS: ALL
+NCCL_DEBUG_FILE: nccl_debug.log
+
+# Network and transport
+# For PCIe-only systems (like P40 in a single node), set to 0 to disable IB
+NCCL_IB_DISABLE: 1
+# If using InfiniBand, uncomment and set appropriate HCA
+# NCCL_IB_HCA: mlx5_0
+# NCCL_IB_TIMEOUT: 14
+# NCCL_IB_RETRY_CNT: 7
+
+# Socket parameters (used when IB is disabled)
+NCCL_SOCKET_NTHREADS: 2
+NCCL_NSOCKS_PERTHREAD: 4
+NCCL_BUFFSIZE: 2097152
+NCCL_P2P_LEVEL: NVL
+NCCL_P2P_DIRECT_ENABLE: 1
+
+# Algorithms and protocols
+# Choose algorithm: TREE, RING
+NCCL_ALGO: Ring
+# Choose protocol: LL, LL128, SIMPLE
+NCCL_PROTO: LL
+# NCCL_MIN_NCHUNKS: 4
+# NCCL_CHUNKSIZE: 524288
+
+# Memory allocation
+NCCL_MAX_RINGS: 8
+NCCL_MIN_CTAS: 144
+
+# Performance tuning
+NCCL_LL_THRESHOLD: 8192
+NCCL_GRAPH_REGISTER: 0
+NCCL_SPIN_COUNT: 4
+NCCL_MAX_CTAS: 64
+
+# Environment variables can be overridden at runtime
+# Example usage:
+#   NCCL_DEBUG=INFO NCCL_ALGO=Tree ./your_program
